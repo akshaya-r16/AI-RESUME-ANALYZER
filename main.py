@@ -178,7 +178,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.title("AI Resume Critiquer")
+st.title("AI Resume Analyzer")
 st.markdown("Upload your resume and get AI-powered feedback tailored to your needs!")
 
 GROQ_API_KEY = "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"
