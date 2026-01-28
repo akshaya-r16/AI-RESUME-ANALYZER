@@ -17,162 +17,281 @@ st.set_page_config(
 # Custom CSS styling
 st.markdown("""
     <style>
-    /* Main app styling */
+    /* Main app styling with gradient background */
     .main {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 2rem;
+        background: linear-gradient(180deg, #e8f4f8 0%, #b8dce8 100%);
+        padding: 3rem 2rem;
+        min-height: 100vh;
     }
     
     /* Container for content */
     .stApp {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(180deg, #e8f4f8 0%, #b8dce8 100%);
     }
     
-    /* Title styling */
+    /* Title styling - Blue color like in screenshot */
     h1 {
-        color: #ffffff !important;
+        color: #1e88e5 !important;
         text-align: center;
-        font-size: 3rem !important;
+        font-size: 3.5rem !important;
         font-weight: 700 !important;
         margin-bottom: 0.5rem !important;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        text-shadow: none;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     
-    /* Subtitle/description styling */
-    .stMarkdown p {
-        color: #f0f0f0 !important;
+    /* Subtitle/description styling - Gray text */
+    [data-testid="stMarkdownContainer"] p {
+        color: #6c757d !important;
         text-align: center;
         font-size: 1.1rem;
-        margin-bottom: 2rem;
+        margin-bottom: 3rem;
+        font-weight: 400;
     }
     
-    /* File uploader styling */
+    /* File uploader styling - White card with icon */
     .stFileUploader {
         background-color: white;
-        padding: 2rem;
-        border-radius: 15px;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         margin-bottom: 1.5rem;
+        border: 3px dashed #d0e8f2;
+        text-align: center;
     }
     
     .stFileUploader label {
-        color: #333 !important;
-        font-weight: 600;
-        font-size: 1.1rem;
+        color: #1a1a1a !important;
+        font-weight: 700 !important;
+        font-size: 1.3rem !important;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .stFileUploader label::before {
+        content: "📄";
+        font-size: 1.5rem;
+        background: #e3f2fd;
+        padding: 10px;
+        border-radius: 10px;
+    }
+    
+    /* Drag and drop area */
+    [data-testid="stFileUploadDropzone"] {
+        background-color: #f8fcff;
+        border: 3px dashed #90caf9;
+        border-radius: 15px;
+        padding: 3rem 2rem;
+        text-align: center;
+    }
+    
+    [data-testid="stFileUploadDropzone"] button {
+        background: #2196f3;
+        color: white;
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        border: none;
+        font-size: 2rem;
+    }
+    
+    /* Text area styling for job description */
+    .stTextArea {
+        background-color: white;
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        margin-bottom: 1.5rem;
+    }
+    
+    .stTextArea label {
+        color: #1a1a1a !important;
+        font-weight: 700 !important;
+        font-size: 1.3rem !important;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1rem;
+    }
+    
+    .stTextArea label::before {
+        content: "💼";
+        font-size: 1.5rem;
+        background: #e8f5e9;
+        padding: 10px;
+        border-radius: 10px;
+    }
+    
+    .stTextArea textarea {
+        border-radius: 12px;
+        border: 2px solid #e0e0e0;
+        padding: 1rem;
+        font-size: 1rem;
+        color: #495057;
+        background-color: white;
+        min-height: 200px;
+    }
+    
+    .stTextArea textarea:focus {
+        border-color: #4caf50;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        outline: none;
     }
     
     /* Text input styling */
     .stTextInput {
         background-color: white;
-        padding: 1.5rem;
-        border-radius: 15px;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         margin-bottom: 1.5rem;
     }
     
     .stTextInput label {
-        color: #333 !important;
-        font-weight: 600;
-        font-size: 1.1rem;
+        color: #1a1a1a !important;
+        font-weight: 700 !important;
+        font-size: 1.3rem !important;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1rem;
+    }
+    
+    .stTextInput label::before {
+        content: "💼";
+        font-size: 1.5rem;
+        background: #e8f5e9;
+        padding: 10px;
+        border-radius: 10px;
     }
     
     .stTextInput input {
-        border-radius: 8px;
+        border-radius: 12px;
         border: 2px solid #e0e0e0;
-        padding: 0.75rem;
+        padding: 1rem;
         font-size: 1rem;
+        color: #495057 !important;
+        background-color: white !important;
     }
     
     .stTextInput input:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        border-color: #4caf50;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        outline: none;
     }
     
-    /* Button styling */
+    /* Button styling - Bottom fixed button like in screenshot */
     .stButton {
-        text-align: center;
-        margin: 2rem 0;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 0;
+        margin: 0;
+        z-index: 999;
     }
     
     .stButton > button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        font-size: 1.2rem;
-        font-weight: 600;
-        padding: 0.75rem 3rem;
-        border-radius: 50px;
+        background: linear-gradient(90deg, #90a4ae 0%, #78909c 100%);
+        color: white !important;
+        font-size: 1.1rem;
+        font-weight: 700;
+        padding: 1.2rem;
+        border-radius: 0;
         border: none;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
         transition: all 0.3s ease;
         cursor: pointer;
         width: 100%;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .stButton > button::before {
+        content: "✨ ";
+        font-size: 1.2rem;
     }
     
     .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        background: linear-gradient(90deg, #78909c 0%, #607d8b 100%);
+        box-shadow: 0 -6px 25px rgba(0,0,0,0.15);
     }
     
     .stButton > button:active {
-        transform: translateY(0);
+        transform: scale(0.98);
     }
     
     /* Results section styling */
     .analysis-results {
         background-color: white;
-        padding: 2rem;
-        border-radius: 15px;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         margin-top: 2rem;
+        margin-bottom: 6rem;
     }
     
     /* Headings in results */
     h3 {
-        color: #667eea !important;
-        font-weight: 600 !important;
-        margin-bottom: 1rem !important;
-        background-color: white;
-        padding: 1rem;
-        border-radius: 10px;
+        color: #1e88e5 !important;
+        font-weight: 700 !important;
+        margin-bottom: 1.5rem !important;
+        font-size: 1.8rem !important;
     }
     
     /* Markdown content in results */
     div[data-testid="stMarkdownContainer"] {
-        background-color: white;
-        padding: 1.5rem;
-        border-radius: 10px;
-        margin-top: 1rem;
+        color: #333333;
+    }
+    
+    div[data-testid="stMarkdownContainer"] p,
+    div[data-testid="stMarkdownContainer"] li {
+        color: #333333 !important;
+        line-height: 1.8;
+        font-size: 1rem;
+    }
+    
+    div[data-testid="stMarkdownContainer"] strong {
+        color: #1e88e5 !important;
+        font-weight: 600;
     }
     
     /* Error messages */
     .stAlert {
-        border-radius: 10px;
+        border-radius: 12px;
         padding: 1rem;
         margin: 1rem 0;
     }
     
-    /* Success messages */
-    .element-container .stSuccess {
-        background-color: #d4edda;
-        border-color: #c3e6cb;
-        color: #155724;
-    }
-    
     /* Loading spinner */
     .stSpinner > div {
-        border-top-color: #667eea !important;
+        border-top-color: #1e88e5 !important;
+    }
+    
+    /* Add padding to bottom of content for fixed button */
+    .main .block-container {
+        padding-bottom: 100px;
     }
     
     /* Responsive design */
     @media (max-width: 768px) {
         h1 {
-            font-size: 2rem !important;
+            font-size: 2.5rem !important;
         }
         
         .stButton > button {
             font-size: 1rem;
-            padding: 0.6rem 2rem;
+            padding: 1rem;
+        }
+        
+        .stFileUploader, .stTextInput {
+            padding: 1.5rem;
         }
     }
     </style>
