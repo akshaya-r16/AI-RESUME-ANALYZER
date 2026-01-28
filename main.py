@@ -7,9 +7,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-st.set_page_config(page_title="AI RESUME ANALYZER", page_icon="📃", layout="centered")
 st.set_page_config(
-    page_title="My App",
+    page_title="AI RESUME ANALYZER",
+    page_icon="📃",
     layout="centered",
     initial_sidebar_state="auto"
 )
