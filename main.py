@@ -7,297 +7,160 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-st.set_page_config(
-    page_title="AI RESUME ANALYZER",
-    page_icon="📃",
-    layout="centered",
-    initial_sidebar_state="auto"
-)
+st.set_page_config(page_title="AI RESUME ANALYZER", page_icon="📃", layout="centered")
 
-# Custom CSS styling
+# Custom CSS styling with better visibility and alignment
 st.markdown("""
     <style>
-    /* Main app styling with gradient background */
+    /* Main container styling */
     .main {
-        background: linear-gradient(180deg, #e8f4f8 0%, #b8dce8 100%);
-        padding: 3rem 2rem;
-        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem;
     }
     
-    /* Container for content */
-    .stApp {
-        background: linear-gradient(180deg, #e8f4f8 0%, #b8dce8 100%);
-    }
-    
-    /* Title styling - Blue color like in screenshot */
+    /* Title styling - Better visibility */
     h1 {
-        color: #1e88e5 !important;
+        color: #ffffff !important;
         text-align: center;
-        font-size: 3.5rem !important;
-        font-weight: 700 !important;
-        margin-bottom: 0.5rem !important;
-        text-shadow: none;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        margin-bottom: 1rem;
     }
     
-    /* Subtitle/description styling - Gray text */
+    /* Subtitle/markdown text - White and readable */
     [data-testid="stMarkdownContainer"] p {
-        color: #6c757d !important;
+        color: #ffffff !important;
+        font-size: 18px;
         text-align: center;
-        font-size: 1.1rem;
-        margin-bottom: 3rem;
-        font-weight: 400;
+        font-weight: 500;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
     }
     
-    /* File uploader styling - White card with icon */
-    .stFileUploader {
-        background-color: white;
-        padding: 2.5rem;
-        border-radius: 20px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        margin-bottom: 1.5rem;
-        border: 3px dashed #d0e8f2;
-        text-align: center;
-    }
-    
-    .stFileUploader label {
-        color: #1a1a1a !important;
-        font-weight: 700 !important;
-        font-size: 1.3rem !important;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 1.5rem;
-    }
-    
-    .stFileUploader label::before {
-        content: "📄";
-        font-size: 1.5rem;
-        background: #e3f2fd;
-        padding: 10px;
+    /* File uploader container */
+    [data-testid="stFileUploader"] {
+        background-color: rgba(255, 255, 255, 0.95);
         border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        margin: 20px 0;
     }
     
-    /* Drag and drop area */
-    [data-testid="stFileUploadDropzone"] {
-        background-color: #f8fcff;
-        border: 3px dashed #90caf9;
-        border-radius: 15px;
-        padding: 3rem 2rem;
-        text-align: center;
+    /* File uploader label - Dark text for visibility */
+    [data-testid="stFileUploader"] label {
+        color: #2c3e50 !important;
+        font-weight: 600;
+        font-size: 16px;
     }
     
-    [data-testid="stFileUploadDropzone"] button {
-        background: #2196f3;
-        color: white;
-        border-radius: 50%;
-        width: 80px;
-        height: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1rem;
-        border: none;
-        font-size: 2rem;
-    }
-    
-    /* Text area styling for job description */
-    .stTextArea {
-        background-color: white;
-        padding: 2.5rem;
-        border-radius: 20px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        margin-bottom: 1.5rem;
-    }
-    
-    .stTextArea label {
-        color: #1a1a1a !important;
-        font-weight: 700 !important;
-        font-size: 1.3rem !important;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 1rem;
-    }
-    
-    .stTextArea label::before {
-        content: "💼";
-        font-size: 1.5rem;
-        background: #e8f5e9;
-        padding: 10px;
+    /* Text input container */
+    [data-testid="stTextInput"] {
+        background-color: rgba(255, 255, 255, 0.95);
         border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        margin: 20px 0;
     }
     
-    .stTextArea textarea {
-        border-radius: 12px;
-        border: 2px solid #e0e0e0;
-        padding: 1rem;
-        font-size: 1rem;
-        color: #495057;
-        background-color: white;
-        min-height: 200px;
+    /* Text input label - Dark text */
+    [data-testid="stTextInput"] label {
+        color: #2c3e50 !important;
+        font-weight: 600;
+        font-size: 16px;
+        margin-bottom: 8px;
     }
     
-    .stTextArea textarea:focus {
-        border-color: #4caf50;
-        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
-        outline: none;
+    /* Input field styling */
+    input {
+        background-color: #ffffff !important;
+        border: 2px solid #667eea !important;
+        border-radius: 8px !important;
+        padding: 12px !important;
+        font-size: 16px !important;
+        color: #2c3e50 !important;
     }
     
-    /* Text input styling */
-    .stTextInput {
-        background-color: white;
-        padding: 2.5rem;
-        border-radius: 20px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        margin-bottom: 1.5rem;
-    }
-    
-    .stTextInput label {
-        color: #1a1a1a !important;
-        font-weight: 700 !important;
-        font-size: 1.3rem !important;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 1rem;
-    }
-    
-    .stTextInput label::before {
-        content: "💼";
-        font-size: 1.5rem;
-        background: #e8f5e9;
-        padding: 10px;
-        border-radius: 10px;
-    }
-    
-    .stTextInput input {
-        border-radius: 12px;
-        border: 2px solid #e0e0e0;
-        padding: 1rem;
-        font-size: 1rem;
-        color: #495057 !important;
-        background-color: white !important;
-    }
-    
-    .stTextInput input:focus {
-        border-color: #4caf50;
-        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
-        outline: none;
-    }
-    
-    /* Button styling - Bottom fixed button like in screenshot */
+    /* Button styling */
     .stButton {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 0;
-        margin: 0;
-        z-index: 999;
+        margin: 30px 0;
+        text-align: center;
     }
     
     .stButton > button {
-        background: linear-gradient(90deg, #90a4ae 0%, #78909c 100%);
+        background: linear-gradient(45deg, #667eea, #764ba2);
         color: white !important;
-        font-size: 1.1rem;
-        font-weight: 700;
-        padding: 1.2rem;
-        border-radius: 0;
         border: none;
-        box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        border-radius: 25px;
+        padding: 15px 40px;
+        font-size: 18px;
+        font-weight: bold;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         transition: all 0.3s ease;
-        cursor: pointer;
         width: 100%;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    
-    .stButton > button::before {
-        content: "✨ ";
-        font-size: 1.2rem;
+        cursor: pointer;
     }
     
     .stButton > button:hover {
-        background: linear-gradient(90deg, #78909c 0%, #607d8b 100%);
-        box-shadow: 0 -6px 25px rgba(0,0,0,0.15);
-    }
-    
-    .stButton > button:active {
-        transform: scale(0.98);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
     }
     
     /* Results section styling */
-    .analysis-results {
-        background-color: white;
-        padding: 2.5rem;
-        border-radius: 20px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        margin-top: 2rem;
-        margin-bottom: 6rem;
+    .element-container:has(h3) {
+        background-color: rgba(255, 255, 255, 0.98);
+        border-radius: 10px;
+        padding: 25px;
+        margin-top: 30px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
     
-    /* Headings in results */
+    /* Results heading */
     h3 {
-        color: #1e88e5 !important;
-        font-weight: 700 !important;
-        margin-bottom: 1.5rem !important;
-        font-size: 1.8rem !important;
+        color: #667eea !important;
+        font-weight: bold;
+        border-bottom: 3px solid #667eea;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
     }
     
-    /* Markdown content in results */
-    div[data-testid="stMarkdownContainer"] {
-        color: #333333;
+    /* Results text content */
+    .element-container:has(h3) ~ .element-container p,
+    .element-container:has(h3) ~ .element-container li,
+    .element-container:has(h3) ~ .element-container {
+        color: #2c3e50 !important;
+        background-color: rgba(255, 255, 255, 0.98);
+        padding: 20px;
+        border-radius: 8px;
+        line-height: 1.6;
     }
     
-    div[data-testid="stMarkdownContainer"] p,
-    div[data-testid="stMarkdownContainer"] li {
-        color: #333333 !important;
-        line-height: 1.8;
-        font-size: 1rem;
+    /* Error/Alert message styling */
+    [data-testid="stAlert"] {
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 10px;
+        padding: 15px;
+        margin: 20px 0;
     }
     
-    div[data-testid="stMarkdownContainer"] strong {
-        color: #1e88e5 !important;
+    [data-testid="stAlert"] p {
+        color: #e74c3c !important;
         font-weight: 600;
     }
     
-    /* Error messages */
-    .stAlert {
-        border-radius: 12px;
-        padding: 1rem;
-        margin: 1rem 0;
+    /* Block container spacing */
+    .block-container {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        max-width: 800px;
     }
     
-    /* Loading spinner */
-    .stSpinner > div {
-        border-top-color: #1e88e5 !important;
-    }
-    
-    /* Add padding to bottom of content for fixed button */
-    .main .block-container {
-        padding-bottom: 100px;
-    }
-    
-    /* Responsive design */
-    @media (max-width: 768px) {
-        h1 {
-            font-size: 2.5rem !important;
-        }
-        
-        .stButton > button {
-            font-size: 1rem;
-            padding: 1rem;
-        }
-        
-        .stFileUploader, .stTextInput {
-            padding: 1.5rem;
-        }
+    /* Upload zone text */
+    [data-testid="stFileUploader"] small {
+        color: #555 !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
-st.title("AI Resume Analyzer")
+st.title("AI Resume Critiquer")
 st.markdown("Upload your resume and get AI-powered feedback tailored to your needs!")
 
 GROQ_API_KEY = "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"
@@ -325,18 +188,20 @@ if analyze and uploaded_file:
         if not file_content.strip():
             st.error("File does not have any content...")
             st.stop()
+        
         prompt = f"""Please analyze this resume and provide constructive feedback.
         Focus on the following aspects:
         1. Content clarity and impact
         2. Skills presentation
         3. Experience description
         4. Specific improvements for {job_role if job_role else 'general job applications'}
+        
         Resume content:
         {file_content}
-        Please provide your analysis in a clear, structured format with specific recommendations."""
         
+        Please provide your analysis in a clear, structured format with specific recommendations."""
+
         client = Groq(api_key="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")
-       
         response = client.chat.completions.create(
             model = "llama-3.3-70b-versatile",
             messages=[
@@ -346,7 +211,10 @@ if analyze and uploaded_file:
             temperature=0.7,
             max_tokens=1000
         )
+        
         st.markdown("### Analysis Results")
         st.markdown(response.choices[0].message.content)
+    
     except Exception as e:
         st.error(f"An error occured: {str(e)}")
+   
